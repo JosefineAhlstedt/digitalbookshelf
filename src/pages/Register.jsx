@@ -6,7 +6,7 @@ import { useAuthContext } from "../contexts/authContext";
 import { useNavigate } from "@solidjs/router";
 
 function Login() {
-  const { login, test } = useAuthContext();
+  const { signup } = useAuthContext();
   const [email, setEmail] = createSignal("");
   const [password, setPassword] = createSignal("");
   const app = useFirebaseApp();
@@ -16,9 +16,10 @@ function Login() {
     e.preventDefault();
 
     try {
-      login(email(), password())
+      signup(email(), password())
         .then((userCredential) => {
           const user = userCredential.user;
+          console.log(user);
           navigate("/");
         })
         .catch((error) => {
@@ -47,8 +48,7 @@ function Login() {
           onInput={(e) => setPassword(e.target.value)}
         />
         <div>
-          <button type="submit">Sign in</button>
-          <A href="/register">Registrera dig!</A>
+          <button type="submit">Register</button>
         </div>
       </form>
     </div>

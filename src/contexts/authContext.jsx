@@ -3,6 +3,7 @@ import {
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../firebase";
 
@@ -21,12 +22,17 @@ export function AuthProvider(props) {
     return signOut(auth);
   };
 
+  const signup = async (email, password) => {
+    await createUserWithEmailAndPassword(auth, email, password);
+  };
+
   const authvariables = {
     count,
     userEmail,
     login,
     currentUser,
     logout,
+    signup,
   };
 
   onMount(() => {
