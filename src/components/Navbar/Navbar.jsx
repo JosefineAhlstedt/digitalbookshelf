@@ -1,9 +1,9 @@
-import { Routes, Route, A } from "@solidjs/router"
-import styles from "./Navbar.module.scss"
-import { createSignal, Show } from "solid-js"
+import { Routes, Route, A } from "@solidjs/router";
+import styles from "./Navbar.module.scss";
+import { createSignal, Show } from "solid-js";
 
 function Navbar() {
-  const [active, setActive] = createSignal("inactive")
+  const [active, setActive] = createSignal("inactive");
   return (
     <header>
       <div class={active()}>
@@ -12,11 +12,12 @@ function Navbar() {
             <A href="/mybooks">My books</A>
             <A href="/">Home</A>
             <A href="/login">Login</A>
+            <A href="/logout">Logout</A>
           </nav>
         </div>
       </div>
     </header>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;
