@@ -6,6 +6,7 @@ const Home = lazy(() => import("./pages/Home"));
 const Navbar = lazy(() => import("./components/Navbar/Navbar"));
 const Login = lazy(() => import("./pages/Login"));
 const Logout = lazy(() => import("./pages/Logout"));
+import RequireAuth from "./components/RequireAuth";
 
 function App() {
   return (
@@ -13,7 +14,14 @@ function App() {
       <Navbar />
       <h1>My Site with Lots of Pages</h1>
       <Routes>
-        <Route path="/" component={Home} />
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <Home />
+            </RequireAuth>
+          }
+        />
         <Route path="/mybooks" component={MyBooks} />
         <Route path="/login" component={Login} />
         <Route path="/logout" component={Logout} />
