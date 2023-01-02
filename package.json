@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@solidjs/router": "^0.6.0",
+    "axios": "^1.2.2",
     "firebase": "^9.15.0",
     "solid-firebase": "^0.1.6",
     "solid-js": "^1.5.1"

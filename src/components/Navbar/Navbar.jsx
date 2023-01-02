@@ -1,7 +1,8 @@
-import { Routes, Route, A } from "@solidjs/router";
+import { A } from "@solidjs/router";
 import styles from "./Navbar.module.scss";
 import { createSignal, Show } from "solid-js";
 import { useAuthContext } from "../../contexts/authContext";
+import Searchbar from "../Searchbar/Searchbar";
 
 function Navbar() {
   const [active, setActive] = createSignal("inactive");
@@ -21,6 +22,7 @@ function Navbar() {
             <Show when={currentUser()}>
               <A href="/logout">Logout</A>
             </Show>
+            <Searchbar></Searchbar>
           </nav>
         </div>
       </div>
