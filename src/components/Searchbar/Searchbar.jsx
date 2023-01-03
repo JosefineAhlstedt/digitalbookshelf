@@ -5,7 +5,7 @@ function Searchbar() {
   let inputHandler = (e) => {
     //convert input text to lower case
     var lowerCase = e.target.value.toLowerCase();
-    navigate(`/results/${lowerCase}`);
+    navigate(`/results/${lowerCase}/0`);
   };
   return (
     <>

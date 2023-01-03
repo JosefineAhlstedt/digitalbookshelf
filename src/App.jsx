@@ -28,7 +28,7 @@ function App() {
         <Route path="/register" component={Register} />
         <Route path="/login" component={Login} />
         <Route path="/logout" component={Logout} />
-        <Route path="/results/:keyword" component={Search} />
+        <Route path="/results/:keyword/:page" component={Search} />
       </Routes>
     </div>
   );
