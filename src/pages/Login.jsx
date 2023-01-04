@@ -34,13 +34,13 @@ function Login() {
   return (
     <div class={styles.container}>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="">Email</label>
+        <label>Email</label>
         <input
           type="text"
           placeholder="username"
           onInput={(e) => setEmail(e.target.value)}
         />
-        <label htmlFor="">Password</label>
+        <label>Password</label>
         <input
           type="text"
           placeholder="********"

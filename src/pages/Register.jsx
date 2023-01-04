@@ -10,14 +10,17 @@ function Login() {
   const [email, setEmail] = createSignal("");
   const [username, setUsername] = createSignal("");
   const [password, setPassword] = createSignal("");
+  const [photo, setPhoto] = createSignal("");
   //const app = useFirebaseApp();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log("photo", photo());
+
     try {
-      signup(email(), username(), password())
+      signup(email(), username(), password(), photo())
         .then(() => {
           //const user = userCredential.user;
           console.log("registered!");
@@ -36,24 +39,26 @@ function Login() {
   return (
     <div class={styles.container}>
       <form onSubmit={handleSubmit}>
-        <label htmlFor="">Email</label>
+        <label>Email</label>
         <input
           type="text"
           placeholder="username"
           onInput={(e) => setEmail(e.target.value)}
         />
-        <label htmlFor="">Username</label>
+        <label>Username</label>
         <input
           type="text"
           placeholder="name"
           onInput={(e) => setUsername(e.target.value)}
         />
-        <label htmlFor="">Password</label>
+        <label htmlFor="password">Password</label>
         <input
-          type="text"
+          type="password"
           placeholder="********"
           onInput={(e) => setPassword(e.target.value)}
         />
+        <label htmlFor="file">Photo</label>
+        <input type="file" onInput={(e) => setPhoto(e.target.files[0])} />
         <div>
           <button type="submit">Register</button>
         </div>

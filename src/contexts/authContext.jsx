@@ -5,7 +5,8 @@ import {
   signOut,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
-import { auth, db } from "../firebase";
+import { auth, db, storage } from "../firebase";
+import { ref, getDownloadURL, uploadBytes } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 
 const AuthContext = createContext();
@@ -23,15 +24,28 @@ export function AuthProvider(props) {
     return signOut(auth);
   };
 
-  const signup = async (email, username, password) => {
+  const signup = async (email, username, password, photo) => {
     await createUserWithEmailAndPassword(auth, email, password);
+
+    //let photoURL = auth.currentUser.photoURL;
+
+    console.log("foto!", photo);
+
+    const photoRef = ref(
+      storage,
+      `photos/${auth.currentUser.email}/${photo.name}`
+    );
+
+    const uploadResult = await uploadBytes(photoRef, photo);
+
+    let photoURL = await getDownloadURL(uploadResult.ref);
 
     const docRef = doc(db, "users", auth.currentUser.uid);
 
     await setDoc(docRef, {
       email: email,
       username: username,
-      photoURL: "photoURL",
+      photoURL: photoURL,
     });
   };
 
