@@ -5,7 +5,8 @@ import {
   signOut,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 const AuthContext = createContext();
 
@@ -22,8 +23,16 @@ export function AuthProvider(props) {
     return signOut(auth);
   };
 
-  const signup = async (email, password) => {
+  const signup = async (email, username, password) => {
     await createUserWithEmailAndPassword(auth, email, password);
+
+    const docRef = doc(db, "users", auth.currentUser.uid);
+
+    await setDoc(docRef, {
+      email: email,
+      username: username,
+      photoURL: "photoURL",
+    });
   };
 
   const authvariables = {

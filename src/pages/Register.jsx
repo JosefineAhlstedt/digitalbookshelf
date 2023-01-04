@@ -8,18 +8,19 @@ import { useNavigate } from "@solidjs/router";
 function Login() {
   const { signup } = useAuthContext();
   const [email, setEmail] = createSignal("");
+  const [username, setUsername] = createSignal("");
   const [password, setPassword] = createSignal("");
-  const app = useFirebaseApp();
+  //const app = useFirebaseApp();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      signup(email(), password())
-        .then((userCredential) => {
-          const user = userCredential.user;
-          console.log(user);
+      signup(email(), username(), password())
+        .then(() => {
+          //const user = userCredential.user;
+          console.log("registered!");
           navigate("/");
         })
         .catch((error) => {
@@ -40,6 +41,12 @@ function Login() {
           type="text"
           placeholder="username"
           onInput={(e) => setEmail(e.target.value)}
+        />
+        <label htmlFor="">Username</label>
+        <input
+          type="text"
+          placeholder="name"
+          onInput={(e) => setUsername(e.target.value)}
         />
         <label htmlFor="">Password</label>
         <input
