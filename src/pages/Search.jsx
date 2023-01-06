@@ -3,6 +3,7 @@ import { useParams, useSearchParams } from "@solidjs/router";
 import BookAPI from "../services/BooksAPI";
 import styles from "./Search.module.scss";
 import Pagination from "../components/Pagination/Pagination";
+import { useNavigate } from "@solidjs/router";
 
 function Search() {
   const [bookData, setBookData] = createSignal(false);
@@ -12,6 +13,7 @@ function Search() {
     interval: 0,
   });
   const params = useParams();
+  const navigate = useNavigate();
 
   createEffect(() => {
     if ({ ...searchParams }.interval !== undefined || NaN) {
@@ -43,7 +45,12 @@ function Search() {
                 }
               ></img>
               <div class={styles.textInfo}>
-                <h3>{item.volumeInfo.title}</h3>
+                <h3
+                  class={styles.title}
+                  onClick={() => navigate(`/book/${item.id}`)}
+                >
+                  {item.volumeInfo.title}
+                </h3>
                 <div>
                   {
                     <For each={item.volumeInfo.authors}>

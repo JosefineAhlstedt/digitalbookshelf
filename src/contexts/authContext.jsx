@@ -24,6 +24,15 @@ export function AuthProvider(props) {
     return signOut(auth);
   };
 
+  const addBook = async (bookObject, bookId, bookshelf) => {
+    console.log("from book", currentUser());
+    await setDoc(doc(db, "books", bookId), {
+      ...bookObject,
+      userId: currentUser().uid,
+      bookshelfId: bookshelf,
+    });
+  };
+
   const signup = async (email, username, password, photo) => {
     await createUserWithEmailAndPassword(auth, email, password);
 
@@ -56,6 +65,7 @@ export function AuthProvider(props) {
     currentUser,
     logout,
     signup,
+    addBook,
   };
 
   onMount(() => {

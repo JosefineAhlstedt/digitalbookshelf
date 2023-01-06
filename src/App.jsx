@@ -8,6 +8,7 @@ const Login = lazy(() => import("./pages/Login"));
 const Logout = lazy(() => import("./pages/Logout"));
 const Register = lazy(() => import("./pages/Register"));
 const Search = lazy(() => import("./pages/Search"));
+const Book = lazy(() => import("./pages/Book"));
 import RequireAuth from "./components/RequireAuth";
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/logout" component={Logout} />
         <Route path="/results/:keyword/:page" component={Search} />
+        <Route path="/book/:id" component={Book} />
       </Routes>
     </div>
   );
