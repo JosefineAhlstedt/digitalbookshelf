@@ -12,9 +12,9 @@ import { doc, setDoc } from "firebase/firestore";
 const AuthContext = createContext();
 
 export function AuthProvider(props) {
-  const [count, setCount] = createSignal(props.count ?? 5);
+  const [count, setCount] = createSignal(5);
   const [userEmail, setUserEmail] = createSignal("testmail");
-  const [currentUser, setcurrentUser] = createSignal(null);
+  const [currentUser, setcurrentUser] = createSignal("Noone");
 
   const login = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
@@ -24,14 +24,14 @@ export function AuthProvider(props) {
     return signOut(auth);
   };
 
-  const addBook = async (bookObject, bookId, bookshelf) => {
-    console.log("from book", currentUser());
-    await setDoc(doc(db, "books", bookId), {
-      ...bookObject,
-      userId: currentUser().uid,
-      bookshelfId: bookshelf,
-    });
-  };
+  // const addBook = async (bookObject, bookId, bookshelf) => {
+  //   console.log("from book", currentUser());
+  //   await setDoc(doc(db, "books", bookId), {
+  //     ...bookObject,
+  //     userId: currentUser().uid,
+  //     bookshelfId: bookshelf,
+  //   });
+  // };
 
   const signup = async (email, username, password, photo) => {
     await createUserWithEmailAndPassword(auth, email, password);
@@ -65,14 +65,13 @@ export function AuthProvider(props) {
     currentUser,
     logout,
     signup,
-    addBook,
   };
 
   onMount(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log("User status", user);
       setcurrentUser(user);
     });
-
     return unsubscribe;
   });
 

@@ -5,14 +5,14 @@ import { useNavigate } from "@solidjs/router";
 import { useAuthContext } from "../contexts/authContext";
 import { auth, db, storage } from "../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
+import addBook from "../hooks/useAddBook";
 
 function Book() {
   const [bookData, setBookData] = createSignal(false);
   const [bookshelfID, setbookshelfID] = createSignal("");
   const params = useParams();
-  const { addBook, currentUser } = useAuthContext();
+  const { currentUser } = useAuthContext();
 
-  console.log("params", currentUser());
   createEffect(() => {
     BookAPI.getOneBook(params.id).then((data) => {
       setBookData(data);
@@ -49,15 +49,16 @@ function Book() {
 
     querySnapshot
       .then((result) => {
-        console.log("querySnapshot", result);
         result.forEach((doc) => {
-          console.log("DOC ID", doc.id);
-          setbookshelfID(doc.id);
-          console.log(doc.id, "=>", doc.data());
+          if (doc.data().name === e.target.name) {
+            setbookshelfID(doc.id);
+          }
         });
-        addBook(bookObject, params.id, bookshelfID()).then((data) => {
-          console.log("added book");
-        });
+        addBook(bookObject, params.id, bookshelfID(), currentUser().uid).then(
+          (data) => {
+            console.log("added book");
+          }
+        );
       })
       .catch((error) => {
         const errorCode = error.code;
