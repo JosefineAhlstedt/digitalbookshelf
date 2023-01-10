@@ -9,13 +9,13 @@ const Logout = lazy(() => import("./pages/Logout"));
 const Register = lazy(() => import("./pages/Register"));
 const Search = lazy(() => import("./pages/Search"));
 const Book = lazy(() => import("./pages/Book"));
+const Bookshelf = lazy(() => import("./pages/Bookshelf"));
 import RequireAuth from "./components/RequireAuth";
 
 function App() {
   return (
     <div class={styles.App}>
       <Navbar />
-      <h1>My Site with Lots of Pages</h1>
       <Routes>
         <Route
           path="/"
@@ -31,6 +31,7 @@ function App() {
         <Route path="/logout" component={Logout} />
         <Route path="/results/:keyword/:page" component={Search} />
         <Route path="/book/:id" component={Book} />
+        <Route path="/bookshelf/:name" component={Bookshelf} />
       </Routes>
     </div>
   );

@@ -1,15 +1,15 @@
-import { createSignal, createEffect, For, createMemo, onMount } from "solid-js";
-import { useParams, useSearchParams } from "@solidjs/router";
+import { createSignal, createEffect } from "solid-js";
+import { useParams } from "@solidjs/router";
 import BookAPI from "../services/BooksAPI";
-import { useNavigate } from "@solidjs/router";
 import { useAuthContext } from "../contexts/authContext";
-import { auth, db, storage } from "../firebase";
-import { collection, query, where, getDocs } from "firebase/firestore";
 import addBook from "../hooks/useAddBook";
+import getBookshelves from "../hooks/useGetBookshelves";
+import styles from "./Book.module.scss";
 
 function Book() {
   const [bookData, setBookData] = createSignal(false);
   const [bookshelfID, setbookshelfID] = createSignal("");
+  const [bookshelf, setbookshelves] = createSignal("");
   const params = useParams();
   const { currentUser } = useAuthContext();
 
@@ -17,6 +17,16 @@ function Book() {
     BookAPI.getOneBook(params.id).then((data) => {
       setBookData(data);
     });
+  });
+
+  createEffect(() => {
+    const { currentUser } = useAuthContext();
+    if (currentUser().uid !== undefined) {
+      //Get the bookshelves that the user has
+      getBookshelves(currentUser().uid).then(function (data) {
+        setbookshelves(data);
+      });
+    }
   });
 
   const handleAdd = (e) => {
@@ -29,7 +39,7 @@ function Book() {
         : "none",
       publisher: bookData().volumeInfo.publisher,
       publishedDate: bookData().volumeInfo.publishedDate,
-      img: bookData().volumeInfo.imageLinks.thumbnail
+      img: bookData().volumeInfo.imageLinks
         ? bookData().volumeInfo.imageLinks.thumbnail
         : "",
       language: bookData().volumeInfo.language,
@@ -38,33 +48,30 @@ function Book() {
         : "none",
     };
 
-    //const bookshelvesRef = collection(db, "bookshelves");
-
-    const q = query(
-      collection(db, "bookshelves"),
-      where("userId", "==", currentUser().uid)
-    );
-
-    const querySnapshot = getDocs(q);
-
-    querySnapshot
-      .then((result) => {
-        result.forEach((doc) => {
-          if (doc.data().name === e.target.name) {
-            setbookshelfID(doc.id);
-          }
-        });
-        addBook(bookObject, params.id, bookshelfID(), currentUser().uid).then(
-          (data) => {
-            console.log("added book");
-          }
-        );
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage);
+    try {
+      bookshelf().forEach((shelf, i) => {
+        console.log("Round:", i, e.target.name, e.target.value, shelf.name);
+        console.log("shelf", shelf);
+        if (shelf.name === e.target.name) {
+          console.log("Match!", i, e.target.name, e.target.value, shelf.name);
+          setbookshelfID(shelf.id);
+        } else if (shelf.name === e.target.value) {
+          setbookshelfID(shelf.id);
+        } else {
+          console.log("No match..", shelf.id);
+        }
       });
+
+      console.log("SHELF", bookshelf());
+
+      addBook(bookObject, params.id, bookshelfID(), currentUser().uid).then(
+        (data) => {
+          console.log("added book");
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div>
@@ -82,7 +89,15 @@ function Book() {
             <button name="Want to read" onClick={handleAdd}>
               Want to read
             </button>
-            <button>Save to a bookshelf...</button>
+            <div>
+              <select name="" id="">
+                <option>Choose bookshelf..</option>
+                {bookshelf() &&
+                  bookshelf().map((shelf) => {
+                    return <option onClick={handleAdd}>{shelf.name}</option>;
+                  })}
+              </select>
+            </div>
           </div>
         </>
       )}
