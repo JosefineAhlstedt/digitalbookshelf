@@ -15,6 +15,9 @@ function Navbar() {
             <Show when={currentUser()}>
               <A href="/mybooks">My books</A>
             </Show>
+            <Show when={currentUser()}>
+              <A href="/profile">Profile</A>
+            </Show>
             <A href="/">Home</A>
             <Show when={!currentUser()}>
               <A href="/login">Login</A>
