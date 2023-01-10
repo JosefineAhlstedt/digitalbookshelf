@@ -1,12 +1,21 @@
 import { db } from "../firebase";
 import { collection, query, where, getDocs } from "firebase/firestore";
+import { createSignal } from "solid-js";
 
-const getBooks = async (id, bookshelf) => {
-  const q = query(
-    collection(db, "books"),
-    where("userId", "==", id),
-    where("bookshelfId", "==", bookshelf.id)
-  );
+const getBooks = async (id, bookshelfID) => {
+  let q;
+  if (bookshelfID !== undefined) {
+    console.log("We have id!");
+    q = query(
+      collection(db, "books"),
+      where("userId", "==", id),
+      where("bookshelfId", "==", bookshelfID)
+    );
+  } else {
+    console.log("No id....");
+    q = query(collection(db, "books"), where("userId", "==", id));
+  }
+
   const arrayWithBooks = [];
 
   const querySnapshot = await getDocs(q);
@@ -18,7 +27,6 @@ const getBooks = async (id, bookshelf) => {
   if (arrayWithBooks !== []) {
     const bookObject = {
       books: arrayWithBooks,
-      shelf: bookshelf,
     };
     return bookObject;
   }

@@ -1,5 +1,5 @@
 import { Routes, Route, A, Navigate } from "@solidjs/router";
-import { createSignal, createEffect } from "solid-js";
+import { createSignal, createEffect, onMount } from "solid-js";
 import { useAuthContext } from "../contexts/authContext";
 import getBookshelves from "../hooks/useGetBookshelves";
 import getBooks from "../hooks/useGetBooks";
@@ -8,40 +8,55 @@ import { useNavigate } from "@solidjs/router";
 
 function MyBooks() {
   const [books, setBooks] = createSignal();
+  const [bookshelves, setBookshelves] = createSignal();
+  const [library, setLibrary] = createSignal();
   const navigate = useNavigate();
 
-  function sort(shelves, userId) {
-    Promise.all(shelves.map((shelf) => getBooks(userId, shelf))).then(
-      (results) => {
-        setBooks(results);
-        console.log(results);
-        return results;
-      }
-    );
+  function sort(shelves, books) {
+    const myLibrary = [];
+    if (shelves && books !== undefined) {
+      shelves.forEach((shelf) => {
+        let arrayBooks = [];
+        const shelfWithBooks = {
+          books: arrayBooks,
+          shelf: { ...shelf },
+        };
+        books.books.forEach((book) => {
+          if (book.bookshelfId === shelf.id) {
+            arrayBooks.push(book);
+          }
+        });
+
+        myLibrary.push(shelfWithBooks);
+      });
+      console.log("Library", myLibrary);
+
+      return myLibrary;
+    }
   }
 
   createEffect(() => {
     const { currentUser } = useAuthContext();
     if (currentUser().uid !== undefined) {
       //Get the bookshelves that the user has
-      return getBookshelves(currentUser().uid).then(function (data) {
-        console.log("data", data);
-        sort(data, currentUser().uid);
+      getBooks(currentUser().uid).then(function (data) {
+        setBooks(data);
+      });
+      getBookshelves(currentUser().uid).then(function (data) {
+        setBookshelves(data);
       });
     }
   });
 
   createEffect(() => {
-    if (books() !== undefined) {
-      console.log("BOOKS", books());
-    }
+    setLibrary(sort(bookshelves(), books()));
   });
 
   return (
     <div>
       <h1>These are my bookshelves:</h1>
-      {books() &&
-        books().map((library) => {
+      {library() &&
+        library().map((library) => {
           return (
             <div
               onClick={() => navigate(`/bookshelf/${library.shelf.id}`)}
