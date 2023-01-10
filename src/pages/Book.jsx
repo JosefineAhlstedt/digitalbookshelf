@@ -74,29 +74,42 @@ function Book() {
     }
   };
   return (
-    <div>
+    <div class={styles.container}>
       {bookData() && (
         <>
-          <h1>{bookData().volumeInfo.title}</h1>
-          <img
-            src={
-              bookData().volumeInfo.imageLinks
-                ? `${bookData().volumeInfo.imageLinks.thumbnail}`
-                : ""
-            }
-          ></img>
-          <div>
-            <button name="Want to read" onClick={handleAdd}>
-              Want to read
-            </button>
-            <div>
-              <select name="" id="">
-                <option>Choose bookshelf..</option>
-                {bookshelf() &&
-                  bookshelf().map((shelf) => {
-                    return <option onClick={handleAdd}>{shelf.name}</option>;
-                  })}
-              </select>
+          <div class={styles.img}>
+            {bookData().volumeInfo.imageLinks ? (
+              <img src={`${bookData().volumeInfo.imageLinks.thumbnail}`}></img>
+            ) : (
+              <div class={styles.noImage}>No image</div>
+            )}
+          </div>
+
+          <div class={styles.info}>
+            <div class={styles.title}>{bookData().volumeInfo.title}</div>
+            {bookData().volumeInfo.authors.map((author) => {
+              return <div class={styles.authors}>by {...author}</div>;
+            })}
+            <div class={styles.reviews}>
+              <div>Average Rating: {bookData().volumeInfo.averageRating}</div>
+              <div>Ratings: {bookData().volumeInfo.ratingsCount}</div>
+            </div>
+            <div class={styles.buttons}>
+              <button name="Want to read" onClick={handleAdd}>
+                Want to read
+              </button>
+              <div>
+                <select name="" id="">
+                  <option>Choose bookshelf..</option>
+                  {bookshelf() &&
+                    bookshelf().map((shelf) => {
+                      return <option onClick={handleAdd}>{shelf.name}</option>;
+                    })}
+                </select>
+              </div>
+            </div>
+            <div class={styles.description}>
+              {bookData().volumeInfo.description}
             </div>
           </div>
         </>

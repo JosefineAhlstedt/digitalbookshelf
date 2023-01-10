@@ -12,10 +12,8 @@ function Bookshelf() {
   createEffect(() => {
     const { currentUser } = useAuthContext();
     if (currentUser().uid !== undefined) {
-      console.log("user", currentUser().uid);
-      console.log("id", params.name);
       //Get the bookshelves that the user has
-      return getBooks(currentUser().uid, params.name).then(function (data) {
+      return getBooks(currentUser().uid, params.id).then(function (data) {
         console.log("Data", data);
       });
     }

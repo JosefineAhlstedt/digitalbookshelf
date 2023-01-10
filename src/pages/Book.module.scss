@@ -1,0 +1,73 @@
+.container {
+  display: flex;
+  width: 90%;
+  flex-direction: column;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.img {
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+
+  img {
+    box-shadow: 5px 5px 5px 5px lightgrey;
+  }
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+
+  button {
+    border: none;
+    text-decoration: none;
+    background-color: #7dc67f;
+    color: white;
+    padding: 0.5rem;
+    margin: 3%;
+  }
+}
+
+.title {
+  font-size: 1.5rem;
+  text-align: center;
+  width: 100%;
+}
+
+.authors {
+  font-size: 1rem;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 1rem;
+  color: grey;
+}
+
+.reviews {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 1rem;
+  border-top: 1px solid rgb(176, 176, 176);
+  border-bottom: 1px solid rgb(176, 176, 176);
+  padding: 1rem;
+}
+
+.noImage {
+  width: 50%;
+  height: 12rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(176, 176, 176);
+}
+
+.description {
+  text-align: left;
+}

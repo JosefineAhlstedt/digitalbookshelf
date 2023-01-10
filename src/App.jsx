@@ -31,7 +31,7 @@ function App() {
         <Route path="/logout" component={Logout} />
         <Route path="/results/:keyword/:page" component={Search} />
         <Route path="/book/:id" component={Book} />
-        <Route path="/bookshelf/:name" component={Bookshelf} />
+        <Route path="/bookshelf/:id" component={Bookshelf} />
       </Routes>
     </div>
   );

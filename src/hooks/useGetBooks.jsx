@@ -5,14 +5,12 @@ import { createSignal } from "solid-js";
 const getBooks = async (id, bookshelfID) => {
   let q;
   if (bookshelfID !== undefined) {
-    console.log("We have id!");
     q = query(
       collection(db, "books"),
       where("userId", "==", id),
       where("bookshelfId", "==", bookshelfID)
     );
   } else {
-    console.log("No id....");
     q = query(collection(db, "books"), where("userId", "==", id));
   }
 
