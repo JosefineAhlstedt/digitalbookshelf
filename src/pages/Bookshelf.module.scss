@@ -1,0 +1,17 @@
+.card {
+  background-color: antiquewhite;
+  width: 80vw;
+  display: flex;
+  align-items: center;
+  margin: 1rem;
+  //border-bottom: 1px solid black;
+}
+
+.noImage {
+  width: 9rem;
+  height: 10rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(176, 176, 176);
+}

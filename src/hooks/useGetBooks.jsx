@@ -19,14 +19,19 @@ const getBooks = async (id, bookshelfID) => {
   const querySnapshot = await getDocs(q);
 
   querySnapshot.forEach((doc) => {
-    arrayWithBooks.push(doc.data());
+    let bookObj = {
+      id: doc.id,
+      book: doc.data(),
+    };
+    //console.log("Id", doc.id);
+    arrayWithBooks.push(bookObj);
   });
 
   if (arrayWithBooks !== []) {
-    const bookObject = {
-      books: arrayWithBooks,
-    };
-    return bookObject;
+    // const bookObject = {
+    //   books: arrayWithBooks,
+    // };
+    return arrayWithBooks;
   }
 };
 
