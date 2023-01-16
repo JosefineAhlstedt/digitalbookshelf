@@ -3,6 +3,7 @@ import { createSignal, createEffect, onMount } from "solid-js";
 import { useAuthContext } from "../contexts/authContext";
 import getBookshelves from "../hooks/useGetBookshelves";
 import getBooks from "../hooks/useGetBooks";
+import deleteBookshelf from "../hooks/useDeleteBookshelf";
 import addBookshelf from "../hooks/useAddBookshelf";
 import styles from "./MyBooks.module.scss";
 import { useNavigate } from "@solidjs/router";
@@ -33,7 +34,7 @@ function MyBooks() {
 
         myLibrary.push(shelfWithBooks);
       });
-      console.log("Library", myLibrary);
+      //console.log("Library", myLibrary);
 
       return myLibrary;
     }
@@ -46,6 +47,9 @@ function MyBooks() {
       addBookshelf(name(), currentUser().uid).then(function (data) {
         console.log("added data!");
         setShowForm(false);
+        getBookshelves(currentUser().uid).then(function (data) {
+          setBookshelves(data);
+        });
         //navigate(`/bookshelf/${data.id}`);
       });
     } catch (error) {
@@ -68,6 +72,16 @@ function MyBooks() {
   createEffect(() => {
     setLibrary(sort(bookshelves(), books()));
   });
+
+  function handleDelete(e) {
+    deleteBookshelf(e.target.value);
+    getBooks(currentUser().uid).then(function (data) {
+      setBooks(data);
+    });
+    getBookshelves(currentUser().uid).then(function (data) {
+      setBookshelves(data);
+    });
+  }
 
   return (
     <div class={showForm() ? styles.fade : styles.container}>
@@ -97,11 +111,18 @@ function MyBooks() {
       {library() &&
         library().map((library) => {
           return (
-            <div
-              onClick={() => navigate(`/bookshelf/${library.shelf.id}`)}
-              class={styles.card}
-            >
-              <h2>{`${library.shelf.name} (${library.books.length})`}</h2>
+            <div class={styles.card}>
+              <h2
+                onClick={() => navigate(`/bookshelf/${library.shelf.id}`)}
+              >{`${library.shelf.name} (${library.books.length})`}</h2>
+              <button
+                value={JSON.stringify(library, null, 4)}
+                onClick={(e) => {
+                  handleDelete(e);
+                }}
+              >
+                Remove
+              </button>
             </div>
           );
         })}
