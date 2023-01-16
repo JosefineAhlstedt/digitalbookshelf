@@ -1,9 +1,88 @@
 .card {
-  background-color: antiquewhite;
+  //background-color: antiquewhite;
   width: 80vw;
-  height: 50%;
+  height: 10%;
   display: flex;
   align-items: center;
   margin: 1rem;
-  //border-bottom: 1px solid black;
+  border-bottom: 1px solid rgb(212, 212, 212);
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  //opacity: 0.5;
+}
+
+.fade {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.534);
+}
+
+.form {
+  background-color: rgb(255, 255, 255);
+  width: 80vw;
+  z-index: 10;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  //margin: 1rem;
+  height: 25%;
+  top: 20%;
+  border-radius: 2px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    //background-color: blue;
+    width: 100%;
+    align-items: center;
+  }
+
+  input[type="text"] {
+    border: none;
+    border-bottom: 1px solid rgb(107, 107, 107);
+    padding: 1rem;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    width: 90%;
+  }
+
+  input::placeholder {
+    font-size: 2rem;
+  }
+  .createButton {
+    border: none;
+    text-decoration: none;
+    background-color: #7dc67f;
+    color: white;
+    padding: 0.5rem;
+    font-size: 1rem;
+    width: 60%;
+  }
+
+  .closeButton {
+    align-self: flex-end;
+    margin: 1rem;
+    position: absolute;
+    top: 0;
+    border: none;
+    text-decoration: none;
+    background-color: white;
+    font-size: 1.5rem;
+  }
+
+  .closeButton:hover {
+    cursor: pointer;
+  }
 }

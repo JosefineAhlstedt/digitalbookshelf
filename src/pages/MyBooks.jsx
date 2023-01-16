@@ -3,6 +3,7 @@ import { createSignal, createEffect, onMount } from "solid-js";
 import { useAuthContext } from "../contexts/authContext";
 import getBookshelves from "../hooks/useGetBookshelves";
 import getBooks from "../hooks/useGetBooks";
+import addBookshelf from "../hooks/useAddBookshelf";
 import styles from "./MyBooks.module.scss";
 import { useNavigate } from "@solidjs/router";
 
@@ -10,7 +11,10 @@ function MyBooks() {
   const [books, setBooks] = createSignal();
   const [bookshelves, setBookshelves] = createSignal();
   const [library, setLibrary] = createSignal();
+  const [showForm, setShowForm] = createSignal(false);
+  const [name, setName] = createSignal("");
   const navigate = useNavigate();
+  const { currentUser } = useAuthContext();
 
   function sort(shelves, books) {
     const myLibrary = [];
@@ -21,8 +25,8 @@ function MyBooks() {
           books: arrayBooks,
           shelf: { ...shelf },
         };
-        books.books.forEach((book) => {
-          if (book.bookshelfId === shelf.id) {
+        books.forEach((book) => {
+          if (book.book.bookshelfId === shelf.id) {
             arrayBooks.push(book);
           }
         });
@@ -35,8 +39,21 @@ function MyBooks() {
     }
   }
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    try {
+      console.log("params", e);
+      addBookshelf(name(), currentUser().uid).then(function (data) {
+        console.log("added data!");
+        setShowForm(false);
+        //navigate(`/bookshelf/${data.id}`);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   createEffect(() => {
-    const { currentUser } = useAuthContext();
     if (currentUser().uid !== undefined) {
       //Get the bookshelves that the user has
       getBooks(currentUser().uid).then(function (data) {
@@ -53,8 +70,30 @@ function MyBooks() {
   });
 
   return (
-    <div>
+    <div class={showForm() ? styles.fade : styles.container}>
       <h1>These are my bookshelves:</h1>
+      <Show when={showForm()}>
+        <div class={styles.form}>
+          <form onSubmit={handleSubmit}>
+            <button
+              class={styles.closeButton}
+              onClick={() => {
+                setShowForm(false);
+              }}
+            >
+              ✕
+            </button>
+            <input
+              type="text"
+              placeholder="name"
+              onInput={(e) => setName(e.target.value)}
+            />
+            <button class={styles.createButton} type="submit">
+              Create
+            </button>
+          </form>
+        </div>
+      </Show>
       {library() &&
         library().map((library) => {
           return (
@@ -66,7 +105,13 @@ function MyBooks() {
             </div>
           );
         })}
-      <button>Create new bookshelf</button>
+      <button
+        onClick={() => {
+          setShowForm(true);
+        }}
+      >
+        Create new bookshelf
+      </button>
     </div>
   );
 }
