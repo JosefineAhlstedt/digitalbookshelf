@@ -2,6 +2,7 @@ import { Routes, Route, A, useParams, useNavigate } from "@solidjs/router";
 import { createSignal, createEffect } from "solid-js";
 import { useAuthContext } from "../contexts/authContext";
 import getBookshelves from "../hooks/useGetBookshelves";
+import deleteBook from "../hooks/useDeleteBook";
 import getBooks from "../hooks/useGetBooks";
 import styles from "./Bookshelf.module.scss";
 
@@ -9,17 +10,25 @@ function Bookshelf() {
   const [books, setBooks] = createSignal();
   const params = useParams();
   const navigate = useNavigate();
+  const { currentUser } = useAuthContext();
 
   createEffect(() => {
-    const { currentUser } = useAuthContext();
     if (currentUser().uid !== undefined) {
       //Get the bookshelves that the user has
       return getBooks(currentUser().uid, params.id).then(function (data) {
-        console.log("Data", data);
+        //console.log("Data", data);
         setBooks(data);
       });
     }
   });
+
+  function handleDelete(e) {
+    deleteBook(e.target.value);
+    return getBooks(currentUser().uid, params.id).then(function (data) {
+      //console.log("Data", data);
+      setBooks(data);
+    });
+  }
 
   return (
     <div>
@@ -27,10 +36,7 @@ function Bookshelf() {
       {books() &&
         books().map((book) => {
           return (
-            <div
-              onClick={() => navigate(`/book/${book.id}`)}
-              class={styles.card}
-            >
+            <div class={styles.card}>
               {book.book.img ? (
                 <img src={`${book.book.img}`}></img>
               ) : (
@@ -38,7 +44,9 @@ function Bookshelf() {
               )}
 
               <div>
-                <h2>{`${book.book.title}`}</h2>
+                <h2
+                  onClick={() => navigate(`/book/${book.id}`)}
+                >{`${book.book.title}`}</h2>
                 <div>
                   {
                     <For each={book.book.authors}>
@@ -46,6 +54,9 @@ function Bookshelf() {
                     </For>
                   }
                 </div>
+                <button value={book.id} onClick={(e) => handleDelete(e)}>
+                  Remove from shelf
+                </button>
               </div>
             </div>
           );
