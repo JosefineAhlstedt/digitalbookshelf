@@ -5,7 +5,10 @@ import { useAuthContext } from "../contexts/authContext";
 import addBook from "../hooks/useAddBook";
 import addGrade from "../hooks/useAddGrade";
 import getGrade from "../hooks/useGetGrade";
+import getUser from "../hooks/useGetUser";
 import getBookshelves from "../hooks/useGetBookshelves";
+import getReviews from "../hooks/useGetReviews";
+import addReview from "../hooks/useAddReview";
 import styles from "./Book.module.scss";
 import star from "../assets/Star.svg";
 
@@ -20,11 +23,60 @@ function Book() {
   const [amount, setAmount] = createSignal();
   const [voted, setVoted] = createSignal(false);
   const [grade, setGrade] = createSignal(0);
+  const [showForm, setShowForm] = createSignal(false);
+  const [review, setReview] = createSignal(true);
+  const [bookUser, setBookUser] = createSignal();
+  const [reviews, setReviews] = createSignal();
+  const [reviewsWithUsers, setReviewsWithUsers] = createSignal([]);
 
   createEffect(() => {
     BookAPI.getOneBook(params.id).then((data) => {
       setBookData(data);
     });
+    //getReviews(bookData().id);
+  });
+
+  createEffect(() => {
+    console.log("bookData()", bookData().id);
+    getReviews(bookData().id).then(function (data) {
+      console.log("DaTA", data);
+      setReviews(data);
+    });
+  });
+
+  createEffect(() => {
+    if (reviews()) {
+      let value = reviews().forEach((review) => {
+        let reviewArray = [];
+        const user = getUser(review.user).then(function (data) {
+          console.log("User!!!", data, review);
+          let reviewWithUser = {
+            user: data,
+            review: review,
+          };
+          console.log("reviewWithUser", reviewWithUser);
+          if (reviewsWithUsers().length < reviews().length) {
+            setReviewsWithUsers((reviewsWithUsers) => [
+              reviewWithUser,
+              ...reviewsWithUsers,
+            ]);
+          }
+
+          //reviewArray.push(reviewWithUser);
+
+          console.log("ARRAY", reviewArray);
+          console.log("NOOOOO", reviewsWithUsers());
+          return reviewArray;
+          //setBookUser(data);
+        });
+      });
+
+      if (reviewsWithUsers() !== undefined) {
+        //setReviewsWithUsers(...reviewArray);
+        //setReviewsWithUsers(value);
+        console.log("reviewsWithUsers!!!", reviewsWithUsers());
+      }
+    }
   });
 
   const renderStars = async (amount) => {
@@ -35,6 +87,7 @@ function Book() {
   };
 
   createEffect(() => {
+    //console.log("currentUser", currentUser());
     if (currentUser().uid !== undefined) {
       //Get the bookshelves that the user has
       getBookshelves(currentUser().uid).then(function (data) {
@@ -80,6 +133,22 @@ function Book() {
     }
   };
 
+  function submitReview(e) {
+    console.log("E", e);
+  }
+
+  function sendReview(e) {
+    e.preventDefault();
+    try {
+      setShowForm(false);
+      addReview(bookData().id, review(), currentUser().uid);
+
+      //navigate(`/bookshelf/${data.id}`);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const handleAdd = (e) => {
     console.log("click", currentUser().uid);
     let bookObject = {
@@ -121,7 +190,31 @@ function Book() {
     }
   };
   return (
-    <div class={styles.container}>
+    <div class={showForm() ? styles.fade : styles.container}>
+      <Show when={showForm()}>
+        <div class={styles.form}>
+          <form onSubmit={sendReview}>
+            <button
+              class={styles.closeButton}
+              onClick={() => {
+                setShowForm(false);
+              }}
+            >
+              ✕
+            </button>
+            <p>Write your review...</p>
+            <textarea
+              onChange={(e) => {
+                setReview(e.target.value);
+                console.log(e.target.value);
+              }}
+            ></textarea>
+            <button class={styles.createButton} type="submit">
+              Send
+            </button>
+          </form>
+        </div>
+      </Show>
       {bookData() && (
         <>
           <div class={styles.img}>
@@ -178,10 +271,29 @@ function Book() {
                 </For>
               }
             </div>
+            <button onClick={(e) => submitReview(e)}>Write review</button>
             <div
               class={styles.description}
               innerHTML={bookData().volumeInfo.description}
             ></div>
+            <div class={styles.textReviews}>
+              <div>Reviews</div>
+            </div>
+            {reviewsWithUsers() &&
+              reviewsWithUsers().map((obj) => {
+                return (
+                  <div class={styles.userReview}>
+                    <img
+                      class={styles.profilePhoto}
+                      src={`${obj.user.photoURL}`}
+                    ></img>
+                    <div class={styles.textReview}>
+                      <div>{obj.user.username} said: </div>
+                      <div>{obj.review.review}</div>
+                    </div>
+                  </div>
+                );
+              })}
           </div>
         </>
       )}
