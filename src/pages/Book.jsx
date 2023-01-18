@@ -225,10 +225,10 @@ function Book() {
               <div>Ratings: {bookData().volumeInfo.ratingsCount}</div>
             </div>
             <div class={styles.buttons}>
-              <button name="Want to read" onClick={handleAdd}>
+              {/* <button name="Want to read" onClick={handleAdd}>
                 Want to read
-              </button>
-              <div>
+              </button> */}
+              <div class={styles.select}>
                 <select name="" id="">
                   <option>Choose bookshelf..</option>
                   {bookshelf() &&
@@ -261,7 +261,9 @@ function Book() {
                 </For>
               }
             </div>
-            <button onClick={(e) => openReview(e)}>Write review</button>
+            <button class={styles.reviewButton} onClick={(e) => openReview(e)}>
+              Write review
+            </button>
             <div
               class={styles.description}
               innerHTML={bookData().volumeInfo.description}
