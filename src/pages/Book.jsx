@@ -10,7 +10,6 @@ import getBookshelves from "../hooks/useGetBookshelves";
 import getReviews from "../hooks/useGetReviews";
 import addReview from "../hooks/useAddReview";
 import styles from "./Book.module.scss";
-import star from "../assets/Star.svg";
 
 function Book() {
   const [bookData, setBookData] = createSignal(false);
@@ -20,65 +19,68 @@ function Book() {
   const params = useParams();
   const { currentUser } = useAuthContext();
   const stars = [1, 2, 3, 4, 5];
-  const [amount, setAmount] = createSignal();
-  const [voted, setVoted] = createSignal(false);
-  const [grade, setGrade] = createSignal(0);
+  const [graded, setGraded] = createSignal(false);
   const [showForm, setShowForm] = createSignal(false);
   const [review, setReview] = createSignal(true);
-  const [bookUser, setBookUser] = createSignal();
   const [reviews, setReviews] = createSignal();
   const [reviewsWithUsers, setReviewsWithUsers] = createSignal([]);
 
-  createEffect(() => {
+  onMount(() => {
+    //Get the clicked book and store it's data
     BookAPI.getOneBook(params.id).then((data) => {
       setBookData(data);
     });
-    //getReviews(bookData().id);
   });
 
+  //Get the books reviews and store them when the bookData is set
   createEffect(() => {
-    console.log("bookData()", bookData().id);
     getReviews(bookData().id).then(function (data) {
-      console.log("DaTA", data);
       setReviews(data);
     });
   });
 
+  //Get the users who wrote the reviews and store them when the reviews are set
   createEffect(() => {
     if (reviews()) {
-      let value = reviews().forEach((review) => {
+      reviews().forEach((review) => {
         let reviewArray = [];
-        const user = getUser(review.user).then(function (data) {
-          console.log("User!!!", data, review);
+        getUser(review.user).then(function (data) {
           let reviewWithUser = {
             user: data,
             review: review,
           };
-          console.log("reviewWithUser", reviewWithUser);
           if (reviewsWithUsers().length < reviews().length) {
             setReviewsWithUsers((reviewsWithUsers) => [
               reviewWithUser,
               ...reviewsWithUsers,
             ]);
           }
-
-          //reviewArray.push(reviewWithUser);
-
-          console.log("ARRAY", reviewArray);
-          console.log("NOOOOO", reviewsWithUsers());
           return reviewArray;
-          //setBookUser(data);
         });
       });
-
-      if (reviewsWithUsers() !== undefined) {
-        //setReviewsWithUsers(...reviewArray);
-        //setReviewsWithUsers(value);
-        console.log("reviewsWithUsers!!!", reviewsWithUsers());
-      }
     }
   });
 
+  //When we have the user data, get personal grade and bookshelves
+  createEffect(() => {
+    if (currentUser().uid !== undefined) {
+      //Get the bookshelves that the user has so they can save the book
+      getBookshelves(currentUser().uid).then(function (data) {
+        setbookshelves(data);
+      });
+
+      //See if the user has graded this book, if so render the stars
+      getGrade(currentUser().uid, bookData().id).then(function (data) {
+        if (data !== undefined) {
+          setGraded(true);
+          renderStars(data.grade);
+        }
+      });
+    }
+  });
+
+  //Functions
+  //Make the stars yellow
   const renderStars = async (amount) => {
     for (let index = 0; index < amount; index++) {
       let el = document.getElementById(index + 1);
@@ -86,26 +88,9 @@ function Book() {
     }
   };
 
-  createEffect(() => {
-    //console.log("currentUser", currentUser());
-    if (currentUser().uid !== undefined) {
-      //Get the bookshelves that the user has
-      getBookshelves(currentUser().uid).then(function (data) {
-        setbookshelves(data);
-      });
-
-      //Is there any grades?
-      getGrade(currentUser().uid, bookData().id).then(function (data) {
-        if (data !== undefined) {
-          setVoted(true);
-          renderStars(data.grade);
-        }
-      });
-    }
-  });
-
+  //Make the stars yellow on hover
   const handleHover = async (e) => {
-    if (voted() === false) {
+    if (graded() === false) {
       for (let index = 0; index < e.srcElement.id; index++) {
         let yellow = document.getElementById(index + 1);
         yellow.attributes[2].value = ""
@@ -115,8 +100,9 @@ function Book() {
     }
   };
 
-  const handleHover2 = async (e) => {
-    if (voted() === false) {
+  //Make the stars grey when leaving hover state
+  const handleLeavingHover = async (e) => {
+    if (graded() === false) {
       for (let index = 0; index < 5; index++) {
         let yellow = document.getElementById(index + 1);
         yellow.attributes[2].value = "#D9D9D9";
@@ -124,17 +110,18 @@ function Book() {
     }
   };
 
-  const handleVote = async (e) => {
-    if (voted() === false) {
-      setVoted(true);
+  //Save the grade to the book and user and render the vote
+  const handleGrading = async (e) => {
+    if (graded() === false) {
+      setGraded(true);
       //Add grade to DB
       addGrade(currentUser().uid, bookData().id, e.srcElement.id);
       renderStars(e.srcElement.id);
     }
   };
 
-  function submitReview(e) {
-    console.log("E", e);
+  function openReview(e) {
+    setShowForm(true);
   }
 
   function sendReview(e) {
@@ -142,15 +129,14 @@ function Book() {
     try {
       setShowForm(false);
       addReview(bookData().id, review(), currentUser().uid);
-
-      //navigate(`/bookshelf/${data.id}`);
     } catch (error) {
       console.log(error);
     }
   }
 
+  //Save the book to the chozen bookshelf
   const handleAdd = (e) => {
-    console.log("click", currentUser().uid);
+    //Save the info in an object
     let bookObject = {
       title: bookData().volumeInfo.title,
       authors: bookData().volumeInfo.authors,
@@ -168,6 +154,7 @@ function Book() {
         : "none",
     };
 
+    //What shelf did the user click on, save that id
     try {
       bookshelf().forEach((shelf, i) => {
         if (shelf.name === e.target.name) {
@@ -178,8 +165,7 @@ function Book() {
         }
       });
 
-      console.log("SHELF", bookshelf());
-
+      //Add the book to the db
       addBook(bookObject, params.id, bookshelfID(), currentUser().uid).then(
         (data) => {
           console.log("added book");
@@ -189,8 +175,10 @@ function Book() {
       console.log(error);
     }
   };
+
   return (
     <div class={showForm() ? styles.fade : styles.container}>
+      {/* The form where yo can write a review */}
       <Show when={showForm()}>
         <div class={styles.form}>
           <form onSubmit={sendReview}>
@@ -215,8 +203,10 @@ function Book() {
           </form>
         </div>
       </Show>
+
       {bookData() && (
         <>
+          {/* The img */}
           <div class={styles.img}>
             {bookData().volumeInfo.imageLinks ? (
               <img src={`${bookData().volumeInfo.imageLinks.thumbnail}`}></img>
@@ -224,7 +214,7 @@ function Book() {
               <div class={styles.noImage}>No image</div>
             )}
           </div>
-
+          {/* The bookinfo */}
           <div class={styles.info}>
             <div class={styles.title}>{bookData().volumeInfo.title}</div>
             {bookData().volumeInfo.authors.map((author) => {
@@ -261,8 +251,8 @@ function Book() {
                       <path
                         id={num}
                         onmouseover={handleHover}
-                        onmouseleave={handleHover2}
-                        onClick={handleVote}
+                        onmouseleave={handleLeavingHover}
+                        onClick={handleGrading}
                         d="M51.5 0L63.5115 36.9676H102.382L70.935 59.8148L82.9465 96.7824L51.5 73.9352L20.0535 96.7824L32.065 59.8148L0.618477 36.9676H39.4885L51.5 0Z"
                         fill={color()}
                       />
@@ -271,7 +261,7 @@ function Book() {
                 </For>
               }
             </div>
-            <button onClick={(e) => submitReview(e)}>Write review</button>
+            <button onClick={(e) => openReview(e)}>Write review</button>
             <div
               class={styles.description}
               innerHTML={bookData().volumeInfo.description}
