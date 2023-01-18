@@ -7,6 +7,7 @@ import deleteBookshelf from "../hooks/useDeleteBookshelf";
 import addBookshelf from "../hooks/useAddBookshelf";
 import styles from "./MyBooks.module.scss";
 import { useNavigate } from "@solidjs/router";
+import books from "../assets/books.png";
 
 function MyBooks() {
   const [books, setBooks] = createSignal();
@@ -85,7 +86,7 @@ function MyBooks() {
 
   return (
     <div class={showForm() ? styles.fade : styles.container}>
-      <h1>These are my bookshelves:</h1>
+      <h2>My bookshelves:</h2>
       <Show when={showForm()}>
         <div class={styles.form}>
           <form onSubmit={handleSubmit}>
@@ -112,10 +113,13 @@ function MyBooks() {
         library().map((library) => {
           return (
             <div class={styles.card}>
-              <h2
+              <img class={styles.bookIcon} src="src/assets/booksicon.png"></img>
+              <div
+                class={styles.name}
                 onClick={() => navigate(`/bookshelf/${library.shelf.id}`)}
-              >{`${library.shelf.name} (${library.books.length})`}</h2>
+              >{`${library.shelf.name} (${library.books.length})`}</div>
               <button
+                class={styles.removeButton}
                 value={JSON.stringify(library, null, 4)}
                 onClick={(e) => {
                   handleDelete(e);
@@ -127,11 +131,12 @@ function MyBooks() {
           );
         })}
       <button
+        class={styles.createButton}
         onClick={() => {
           setShowForm(true);
         }}
       >
-        Create new bookshelf
+        CREATE BOOKSHELF
       </button>
     </div>
   );

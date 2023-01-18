@@ -1,0 +1,93 @@
+.container {
+  width: 100vw;
+  background-color: #ffebc3;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav {
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+.navPhone {
+  display: none;
+}
+
+.popout {
+  height: 100vh;
+  //position: absolute;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  background-color: #fff8e9;
+
+  #logout {
+    border: 1px solid black;
+    padding: 1rem;
+    border-radius: 50px;
+    margin-top: 50%;
+    width: 50%;
+  }
+
+  a {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+}
+
+.hide {
+  display: none;
+}
+
+.closeButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 2rem;
+  border: none;
+  text-decoration: none;
+  background-color: #fff8e9;
+  font-weight: bold;
+}
+
+@media only screen and (max-width: 600px) {
+  .container {
+    width: 100vw;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .navPhone {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .nav {
+    display: none;
+  }
+}
+
+.menu {
+  border: none;
+  text-decoration: none;
+  background-color: #ffebc3;
+  font-weight: bold;
+}

@@ -1,4 +1,5 @@
 import { useNavigate } from "@solidjs/router";
+import styles from "./Searchbar.module.scss";
 
 function Searchbar() {
   const navigate = useNavigate();
@@ -8,11 +9,10 @@ function Searchbar() {
     navigate(`/results/${lowerCase}/0`);
   };
   return (
-    <>
-      <label>Sök: </label>
+    <div class={styles.searchbar}>
       <input onChange={inputHandler} type="text" placeholder="Sök" />
       {/* <List input={bookData()} /> */}
-    </>
+    </div>
   );
 }
 

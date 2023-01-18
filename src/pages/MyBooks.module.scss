@@ -4,8 +4,8 @@
   height: 10%;
   display: flex;
   align-items: center;
-  margin: 1rem;
-  border-bottom: 1px solid rgb(212, 212, 212);
+  padding: 1rem;
+  //border-bottom: 1px solid rgb(212, 212, 212);
   justify-content: space-between;
 }
 
@@ -86,4 +86,38 @@
   .closeButton:hover {
     cursor: pointer;
   }
+}
+
+.removeButton {
+  border: none;
+  text-decoration: none;
+  background-color: #ff5a5a;
+  padding: 0.3rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 50px;
+  color: white;
+}
+
+.createButton {
+  border: none;
+  text-decoration: none;
+  background-color: #ffd375;
+  padding: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 50px;
+  color: white;
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.bookIcon {
+  width: 15%;
+  max-width: 60px;
+}
+
+.name {
+  font-weight: bold;
+  //font-size: 1rem;
 }

@@ -43,10 +43,11 @@ function Bookshelf() {
                 <div class={styles.noImage}>No image</div>
               )}
 
-              <div>
-                <h2
+              <div class={styles.bookInfo}>
+                <div
+                  class={styles.title}
                   onClick={() => navigate(`/book/${book.id}`)}
-                >{`${book.book.title}`}</h2>
+                >{`${book.book.title}`}</div>
                 <div>
                   {
                     <For each={book.book.authors}>
@@ -54,8 +55,12 @@ function Bookshelf() {
                     </For>
                   }
                 </div>
-                <button value={book.id} onClick={(e) => handleDelete(e)}>
-                  Remove from shelf
+                <button
+                  class={styles.removeButton}
+                  value={book.id}
+                  onClick={(e) => handleDelete(e)}
+                >
+                  Remove
                 </button>
               </div>
             </div>
