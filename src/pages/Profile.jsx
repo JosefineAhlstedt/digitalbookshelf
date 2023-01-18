@@ -16,7 +16,7 @@ function Profile() {
   //     }
   //   });
 
-  onMount(() => {
+  createEffect(() => {
     const user = getUser().then(function (data) {
       console.log("User!", data);
       setBookUser(data);
