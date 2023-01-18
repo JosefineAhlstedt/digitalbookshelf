@@ -6,11 +6,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #fff8e9;
+  background-color: #fffaf1;
 }
 
 body {
   margin: 0;
+  background-color: #fffaf1;
 }
 
 .logo {

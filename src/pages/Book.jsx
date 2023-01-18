@@ -288,7 +288,9 @@ function Book() {
                       src={`${obj.user.photoURL}`}
                     ></img>
                     <div class={styles.textReview}>
-                      <div>{obj.user.username} said: </div>
+                      <div>
+                        <b>{obj.user.username}</b> said:{" "}
+                      </div>
                       <div>{obj.review.review}</div>
                     </div>
                   </div>
