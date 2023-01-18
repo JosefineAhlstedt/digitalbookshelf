@@ -6,6 +6,7 @@ import deleteBookshelf from "../hooks/useDeleteBookshelf";
 import addBookshelf from "../hooks/useAddBookshelf";
 import styles from "./MyBooks.module.scss";
 import { useNavigate } from "@solidjs/router";
+import booksIcon from "../assets/booksIcon.png";
 
 function MyBooks() {
   const [books, setBooks] = createSignal();
@@ -109,7 +110,7 @@ function MyBooks() {
         library().map((library) => {
           return (
             <div class={styles.card}>
-              <img class={styles.bookIcon} src="src/assets/booksIcon.png"></img>
+              <img class={styles.bookIcon} src={booksIcon}></img>
               <div
                 class={styles.name}
                 onClick={() => navigate(`/bookshelf/${library.shelf.id}`)}
