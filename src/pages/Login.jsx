@@ -46,7 +46,7 @@ function Login() {
           <div>
             <label>Password</label>
             <input
-              type="text"
+              type="password"
               placeholder="********"
               onInput={(e) => setPassword(e.target.value)}
             />
