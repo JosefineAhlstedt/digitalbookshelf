@@ -33,24 +33,32 @@ function Login() {
 
   return (
     <div class={styles.container}>
-      <form onSubmit={handleSubmit}>
-        <label>Email</label>
-        <input
-          type="text"
-          placeholder="username"
-          onInput={(e) => setEmail(e.target.value)}
-        />
-        <label>Password</label>
-        <input
-          type="text"
-          placeholder="********"
-          onInput={(e) => setPassword(e.target.value)}
-        />
-        <div>
-          <button type="submit">Sign in</button>
-          <A href="/register">Registrera dig!</A>
-        </div>
-      </form>
+      <div class={styles.formContainer}>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>Email</label>
+            <input
+              type="text"
+              placeholder="username"
+              onInput={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Password</label>
+            <input
+              type="text"
+              placeholder="********"
+              onInput={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div>
+            <button class={styles.signinButton} type="submit">
+              Sign in
+            </button>
+            <A href="/register">Registrera dig!</A>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }

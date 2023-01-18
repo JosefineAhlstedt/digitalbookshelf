@@ -38,31 +38,43 @@ function Login() {
 
   return (
     <div class={styles.container}>
-      <form onSubmit={handleSubmit}>
-        <label>Email</label>
-        <input
-          type="text"
-          placeholder="username"
-          onInput={(e) => setEmail(e.target.value)}
-        />
-        <label>Username</label>
-        <input
-          type="text"
-          placeholder="name"
-          onInput={(e) => setUsername(e.target.value)}
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          placeholder="********"
-          onInput={(e) => setPassword(e.target.value)}
-        />
-        <label htmlFor="file">Photo</label>
-        <input type="file" onInput={(e) => setPhoto(e.target.files[0])} />
-        <div>
-          <button type="submit">Register</button>
-        </div>
-      </form>
+      <div class={styles.formContainer}>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>Email</label>
+            <input
+              type="text"
+              placeholder="username"
+              onInput={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Username</label>
+            <input
+              type="text"
+              placeholder="name"
+              onInput={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              placeholder="********"
+              onInput={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div>
+            <label htmlFor="file">Photo</label>
+            <input type="file" onInput={(e) => setPhoto(e.target.files[0])} />
+          </div>
+          <div>
+            <button class={styles.signinButton} type="submit">
+              Register
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
