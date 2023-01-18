@@ -1,4 +1,3 @@
-import { Routes, Route, A, Navigate } from "@solidjs/router";
 import { createSignal, createEffect, onMount } from "solid-js";
 import { useAuthContext } from "../contexts/authContext";
 import getBookshelves from "../hooks/useGetBookshelves";
@@ -7,7 +6,6 @@ import deleteBookshelf from "../hooks/useDeleteBookshelf";
 import addBookshelf from "../hooks/useAddBookshelf";
 import styles from "./MyBooks.module.scss";
 import { useNavigate } from "@solidjs/router";
-import books from "../assets/books.png";
 
 function MyBooks() {
   const [books, setBooks] = createSignal();
@@ -18,6 +16,7 @@ function MyBooks() {
   const navigate = useNavigate();
   const { currentUser } = useAuthContext();
 
+  //Sort the books into their selected shelves
   function sort(shelves, books) {
     const myLibrary = [];
     if (shelves && books !== undefined) {
@@ -35,27 +34,34 @@ function MyBooks() {
 
         myLibrary.push(shelfWithBooks);
       });
-      //console.log("Library", myLibrary);
-
       return myLibrary;
     }
   }
 
+  //Add the bookshelf to the DB
   function handleSubmit(e) {
     e.preventDefault();
     try {
-      console.log("params", e);
       addBookshelf(name(), currentUser().uid).then(function (data) {
         console.log("added data!");
         setShowForm(false);
         getBookshelves(currentUser().uid).then(function (data) {
           setBookshelves(data);
         });
-        //navigate(`/bookshelf/${data.id}`);
       });
     } catch (error) {
       console.log(error);
     }
+  }
+
+  function handleDelete(e) {
+    deleteBookshelf(e.target.value);
+    getBooks(currentUser().uid).then(function (data) {
+      setBooks(data);
+    });
+    getBookshelves(currentUser().uid).then(function (data) {
+      setBookshelves(data);
+    });
   }
 
   createEffect(() => {
@@ -73,16 +79,6 @@ function MyBooks() {
   createEffect(() => {
     setLibrary(sort(bookshelves(), books()));
   });
-
-  function handleDelete(e) {
-    deleteBookshelf(e.target.value);
-    getBooks(currentUser().uid).then(function (data) {
-      setBooks(data);
-    });
-    getBookshelves(currentUser().uid).then(function (data) {
-      setBookshelves(data);
-    });
-  }
 
   return (
     <div class={showForm() ? styles.fade : styles.container}>

@@ -35,13 +35,14 @@ function Bookshelf() {
   //   }
   // });
 
+  //Get the bookshelf
   createEffect(() => {
     getBookshelf(params.id).then(function (data) {
-      console.log("data", data);
       setBookshelf(data);
     });
   });
 
+  //Adds a listener for the books in the current bookshelf
   createEffect(() => {
     if (currentUser().uid !== undefined) {
       const q = query(
@@ -56,17 +57,15 @@ function Bookshelf() {
             id: doc.id,
             book: doc.data(),
           };
-          //console.log("Id", doc.id);
           arrayWithBooks.push(bookObj);
         });
         setBooks(arrayWithBooks);
-        console.log("Current cities in CA: ", arrayWithBooks);
       });
       return unsubscribe;
     }
   });
 
-  //Delete the selected shelf and then get the updated list
+  //Delete the selected shelf
   function handleDelete(e) {
     deleteBook(e.target.value);
     // return getBooks(currentUser().uid, params.id).then(function (data) {
