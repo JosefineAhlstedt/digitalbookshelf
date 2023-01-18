@@ -109,7 +109,7 @@ function MyBooks() {
         library().map((library) => {
           return (
             <div class={styles.card}>
-              <img class={styles.bookIcon} src="src/assets/booksicon.png"></img>
+              <img class={styles.bookIcon} src="src/assets/booksIcon.png"></img>
               <div
                 class={styles.name}
                 onClick={() => navigate(`/bookshelf/${library.shelf.id}`)}
