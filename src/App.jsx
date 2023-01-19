@@ -20,11 +20,12 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={
-            <RequireAuth>
-              <Home />
-            </RequireAuth>
-          }
+          component={Home}
+          // element={
+          //   <RequireAuth>
+          //     <Home />
+          //   </RequireAuth>
+          // }
         />
         <Route path="/mybooks" component={MyBooks} />
         <Route path="/register" component={Register} />

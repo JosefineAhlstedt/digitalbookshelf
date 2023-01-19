@@ -1,11 +1,10 @@
 .infoContainer {
   display: flex;
-  background-color: antiquewhite;
   margin: 1rem;
 }
 
 img {
-  width: 30%;
+  width: 5rem;
   height: 100%;
 }
 
@@ -14,7 +13,6 @@ img {
 }
 
 .textInfo {
-  width: 40%;
   display: flex;
   flex-direction: column;
   text-align: left;

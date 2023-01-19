@@ -140,6 +140,9 @@ function Book() {
     let bookObject = {
       title: bookData().volumeInfo.title,
       authors: bookData().volumeInfo.authors,
+      categories: bookData().volumeInfo.categories
+        ? bookData().volumeInfo.categories
+        : "none",
       averageRating: bookData().volumeInfo.averageRating
         ? bookData().volumeInfo.averageRating
         : "none",

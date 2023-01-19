@@ -1,0 +1,23 @@
+.logoContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.logo {
+  width: 50%;
+  margin-top: 30%;
+  margin: 2rem;
+}
+
+.book {
+  width: 25%;
+  margin: 0.5rem;
+}
+
+.bookContainer {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+}
