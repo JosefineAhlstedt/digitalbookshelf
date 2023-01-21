@@ -1,5 +1,5 @@
 import { createSignal, createEffect, onMount } from "solid-js";
-import { useParams } from "@solidjs/router";
+import { useParams, useNavigate } from "@solidjs/router";
 import BookAPI from "../services/BooksAPI";
 import { useAuthContext } from "../contexts/authContext";
 import addBook from "../hooks/useAddBook";
@@ -24,6 +24,7 @@ function Book() {
   const [review, setReview] = createSignal(true);
   const [reviews, setReviews] = createSignal();
   const [reviewsWithUsers, setReviewsWithUsers] = createSignal([]);
+  const navigate = useNavigate();
 
   onMount(() => {
     //Get the clicked book and store it's data
@@ -221,7 +222,14 @@ function Book() {
           <div class={styles.info}>
             <div class={styles.title}>{bookData().volumeInfo.title}</div>
             {bookData().volumeInfo.authors.map((author) => {
-              return <div class={styles.authors}>by {...author}</div>;
+              return (
+                <div
+                  onClick={() => navigate(`/author/${author}`)}
+                  class={styles.authors}
+                >
+                  by {...author}
+                </div>
+              );
             })}
             <div class={styles.reviews}>
               <div>Average Rating: {bookData().volumeInfo.averageRating}</div>

@@ -24,10 +24,17 @@ const getBooksByCategory = async (category) => {
   return res.data;
 };
 
+const getBooksByAuthor = async (author) => {
+  const res = await axios.get(`${BASE_URL}inauthor:"${author}"&key=${KEY}`);
+  console.log("Got books from this category", res.data);
+  return res.data;
+};
+
 const functions = {
   search,
   getOneBook,
   getBooksByCategory,
+  getBooksByAuthor,
 };
 
 export default functions;
