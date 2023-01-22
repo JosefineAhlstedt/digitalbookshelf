@@ -4,19 +4,21 @@ import { useAuthContext } from "../contexts/authContext";
 import BookAPI from "../services/BooksAPI";
 import logo from "../assets/logo.png";
 import styles from "./Home.module.scss";
-import { A } from "@solidjs/router";
+import { A, useNavigate } from "@solidjs/router";
 
 function Home() {
   const [books, setBooks] = createSignal();
   const [categories, setCategories] = createSignal();
   const [topCategory, setTopCategory] = createSignal("");
   const { currentUser } = useAuthContext();
+  const navigate = useNavigate();
 
   createEffect(() => {
     if (topCategory() !== "") {
       //Get the clicked book and store it's data
       BookAPI.getBooksByCategory(topCategory()).then((data) => {
         setBooks(data);
+        console.log(books());
       });
     }
   });
@@ -90,16 +92,19 @@ function Home() {
               books() && (
                 <div class={styles.bookContainer}>
                   <img
+                    onClick={() => navigate(`/book/${books().items[0].id}`)}
                     class={styles.book}
                     src={`${books().items[0].volumeInfo.imageLinks.thumbnail}`}
                   />
                   <img
+                    onClick={() => navigate(`/book/${books().items[1].id}`)}
                     class={styles.book}
                     src={`${books().items[1].volumeInfo.imageLinks.thumbnail}`}
                   />
                   <img
+                    onClick={() => navigate(`/book/${books().items[2].id}`)}
                     class={styles.book}
-                    src={`${books().items[3].volumeInfo.imageLinks.thumbnail}`}
+                    src={`${books().items[2].volumeInfo.imageLinks.thumbnail}`}
                   />
                 </div>
               )
