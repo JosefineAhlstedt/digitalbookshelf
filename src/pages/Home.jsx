@@ -1,5 +1,5 @@
 import getBooks from "../hooks/useGetBooks";
-import { createSignal, createEffect, onMount } from "solid-js";
+import { createSignal, createEffect } from "solid-js";
 import { useAuthContext } from "../contexts/authContext";
 import BookAPI from "../services/BooksAPI";
 import logo from "../assets/logo.png";
@@ -8,7 +8,6 @@ import { A, useNavigate } from "@solidjs/router";
 
 function Home() {
   const [books, setBooks] = createSignal();
-  const [categories, setCategories] = createSignal();
   const [topCategory, setTopCategory] = createSignal("");
   const { currentUser } = useAuthContext();
   const navigate = useNavigate();

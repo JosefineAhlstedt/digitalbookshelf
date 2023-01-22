@@ -1,5 +1,5 @@
 import styles from "./Pagination.module.scss";
-import { createSignal, onMount } from "solid-js";
+import { onMount } from "solid-js";
 import { useSearchParams } from "@solidjs/router";
 
 function Pagination(props) {

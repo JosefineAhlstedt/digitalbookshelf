@@ -1,6 +1,5 @@
 import { db } from "../firebase";
-import { doc, setDoc, addDoc, collection } from "firebase/firestore";
-import { useAuthContext } from "../contexts/authContext";
+import { addDoc, collection } from "firebase/firestore";
 
 const addGrade = async (id, bookId, grade) => {
   await addDoc(collection(db, "grades"), {

@@ -1,4 +1,4 @@
-import { Match, Switch, onMount } from "solid-js";
+import { onMount } from "solid-js";
 import { useAuthContext } from "../contexts/authContext";
 import { useNavigate } from "@solidjs/router";
 

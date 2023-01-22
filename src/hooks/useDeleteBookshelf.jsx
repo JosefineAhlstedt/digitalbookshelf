@@ -1,6 +1,5 @@
 import { db } from "../firebase";
 import { doc, deleteDoc } from "firebase/firestore";
-import { useAuthContext } from "../contexts/authContext";
 
 const deleteBookshelf = async (shelfWithBooks) => {
   let parsed = JSON.parse(shelfWithBooks);

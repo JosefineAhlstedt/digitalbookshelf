@@ -1,4 +1,3 @@
-import { A } from "@solidjs/router";
 import styles from "./Login.module.scss";
 import { createSignal } from "solid-js";
 import { useFirebaseApp } from "solid-firebase";
