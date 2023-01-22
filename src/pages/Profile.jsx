@@ -5,10 +5,11 @@ import getBookshelves from "../hooks/useGetBookshelves";
 import getBooks from "../hooks/useGetBooks";
 import getUser from "../hooks/useGetUser";
 import styles from "./Profile.module.scss";
-import { useNavigate } from "@solidjs/router";
+import { useNavigate, useParams } from "@solidjs/router";
 
 function Profile() {
   const [bookUser, setBookUser] = createSignal();
+  const params = useParams();
   //   i(() => {
   //     const { currentUser } = useAuthContext();
   //     if (currentUser().uid !== undefined) {
@@ -17,10 +18,17 @@ function Profile() {
   //   });
 
   createEffect(() => {
-    const user = getUser().then(function (data) {
-      console.log("User!", data);
-      setBookUser(data);
-    });
+    if (params.id) {
+      const user = getUser(params.id).then(function (data) {
+        console.log("User!", data);
+        setBookUser(data);
+      });
+    } else {
+      const user = getUser().then(function (data) {
+        console.log("User!", data);
+        setBookUser(data);
+      });
+    }
   });
 
   createEffect(() => {

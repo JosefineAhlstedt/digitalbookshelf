@@ -45,7 +45,7 @@ function Navbar() {
               onClick={() => {
                 setShow(false);
               }}
-              href="/profile"
+              href={`/profile/${currentUser().uid}`}
             >
               Profile
             </A>
@@ -71,7 +71,7 @@ function Navbar() {
               <A href="/mybooks">My books</A>
             </Show>
             <Show when={currentUser()}>
-              <A href="/profile">Profile</A>
+              <A href={`/profile/${currentUser().uid}`}>Profile</A>
             </Show>
 
             <Show when={!currentUser()}>

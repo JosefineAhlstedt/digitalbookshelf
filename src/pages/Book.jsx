@@ -51,6 +51,7 @@ function Book() {
             review: review,
           };
           if (reviewsWithUsers().length < reviews().length) {
+            console.log("users", reviewsWithUsers());
             setReviewsWithUsers((reviewsWithUsers) => [
               reviewWithUser,
               ...reviewsWithUsers,
@@ -294,7 +295,9 @@ function Book() {
                       src={`${obj.user.photoURL}`}
                     ></img>
                     <div class={styles.textReview}>
-                      <div>
+                      <div
+                        onClick={(e) => navigate(`/profile/${obj.review.user}`)}
+                      >
                         <b>{obj.user.username}</b> said:{" "}
                       </div>
                       <div>{obj.review.review}</div>
