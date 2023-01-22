@@ -130,6 +130,9 @@ function Book() {
     try {
       setShowForm(false);
       addReview(bookData().id, review(), currentUser().uid);
+      getReviews(bookData().id).then(function (data) {
+        setReviews(data);
+      });
     } catch (error) {
       console.log(error);
     }
