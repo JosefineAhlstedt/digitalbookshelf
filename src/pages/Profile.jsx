@@ -44,29 +44,21 @@ function Profile() {
   createEffect(() => {
     if (params.id) {
       const user = getUser(params.id).then(function (data) {
-        console.log("User!", data);
         setBookUser(data);
       });
 
       //Get the bookshelves that the user has
       getBooks(params.id).then(function (data) {
-        console.log("Books", data);
         setBooks(data);
       });
       getBookshelves(params.id).then(function (data) {
-        console.log("Bookshelves", data);
         setBookshelves(data);
       });
     } else {
       const user = getUser().then(function (data) {
-        console.log("User!", data);
         setBookUser(data);
       });
     }
-  });
-
-  createEffect(() => {
-    console.log("Got the data woop woop I love this", bookUser());
   });
 
   return (

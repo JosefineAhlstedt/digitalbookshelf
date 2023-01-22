@@ -8,8 +8,6 @@ const addGrade = async (id, bookId, grade) => {
     userId: id,
     bookId: bookId,
   });
-
-  console.log("voted");
 };
 
 export default addGrade;

@@ -51,7 +51,6 @@ function Book() {
             review: review,
           };
           if (reviewsWithUsers().length < reviews().length) {
-            console.log("users", reviewsWithUsers());
             setReviewsWithUsers((reviewsWithUsers) => [
               reviewWithUser,
               ...reviewsWithUsers,
@@ -175,9 +174,7 @@ function Book() {
 
       //Add the book to the db
       addBook(bookObject, params.id, bookshelfID(), currentUser().uid).then(
-        (data) => {
-          console.log("added book");
-        }
+        (data) => {}
       );
     } catch (error) {
       console.log(error);
@@ -202,7 +199,6 @@ function Book() {
             <textarea
               onChange={(e) => {
                 setReview(e.target.value);
-                console.log(e.target.value);
               }}
             ></textarea>
             <button class={styles.createButton} type="submit">

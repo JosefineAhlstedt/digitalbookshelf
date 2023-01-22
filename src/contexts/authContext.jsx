@@ -24,21 +24,8 @@ export function AuthProvider(props) {
     return signOut(auth);
   };
 
-  // const addBook = async (bookObject, bookId, bookshelf) => {
-  //   console.log("from book", currentUser());
-  //   await setDoc(doc(db, "books", bookId), {
-  //     ...bookObject,
-  //     userId: currentUser().uid,
-  //     bookshelfId: bookshelf,
-  //   });
-  // };
-
   const signup = async (email, username, password, photo) => {
     await createUserWithEmailAndPassword(auth, email, password);
-
-    //let photoURL = auth.currentUser.photoURL;
-
-    console.log("foto!", photo);
 
     const photoRef = ref(
       storage,
@@ -69,7 +56,6 @@ export function AuthProvider(props) {
 
   onMount(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log("User status", user);
       setcurrentUser(user);
     });
     return unsubscribe;

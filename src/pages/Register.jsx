@@ -17,13 +17,9 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("photo", photo());
-
     try {
       signup(email(), username(), password(), photo())
         .then(() => {
-          //const user = userCredential.user;
-          console.log("registered!");
           navigate("/");
         })
         .catch((error) => {

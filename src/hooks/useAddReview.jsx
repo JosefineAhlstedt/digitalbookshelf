@@ -8,8 +8,6 @@ const addReview = async (bookId, review, id) => {
     user: id,
     bookId: bookId,
   });
-
-  console.log("added review");
 };
 
 export default addReview;

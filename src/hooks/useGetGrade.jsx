@@ -21,7 +21,6 @@ const getGrades = async (id, bookId) => {
     const querySnapshot = await getDocs(q);
 
     querySnapshot.forEach((doc) => {
-      console.log(doc.data());
       grade = doc.data();
     });
   }

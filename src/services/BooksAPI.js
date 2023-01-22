@@ -6,7 +6,7 @@ const search = async (keyword, index) => {
   const res = await axios.get(
     `${BASE_URL}${keyword}&startIndex=${index}&key=${KEY}`
   );
-  console.log("res", res.data);
+
   return res.data;
 };
 
@@ -14,19 +14,19 @@ const getOneBook = async (id) => {
   const res = await axios.get(
     `https://www.googleapis.com/books/v1/volumes/${id}`
   );
-  console.log("res one book", res.data);
+
   return res.data;
 };
 
 const getBooksByCategory = async (category) => {
   const res = await axios.get(`${BASE_URL}subject:${category}&key=${KEY}`);
-  console.log("Got books from this category", res.data);
+
   return res.data;
 };
 
 const getBooksByAuthor = async (author) => {
   const res = await axios.get(`${BASE_URL}inauthor:"${author}"&key=${KEY}`);
-  console.log("Got books from this category", res.data);
+
   return res.data;
 };
 

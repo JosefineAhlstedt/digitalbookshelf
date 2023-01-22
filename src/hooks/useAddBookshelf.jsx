@@ -6,7 +6,6 @@ const addBookshelf = async (name, id) => {
     userId: id,
     name: name,
   });
-  console.log("Added shelf!");
 };
 
 export default addBookshelf;

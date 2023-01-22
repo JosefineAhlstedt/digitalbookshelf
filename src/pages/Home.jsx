@@ -18,7 +18,6 @@ function Home() {
       //Get the clicked book and store it's data
       BookAPI.getBooksByCategory(topCategory()).then((data) => {
         setBooks(data);
-        console.log(books());
       });
     }
   });

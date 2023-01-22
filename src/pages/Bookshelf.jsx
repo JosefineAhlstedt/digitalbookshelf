@@ -23,18 +23,6 @@ function Bookshelf() {
   const navigate = useNavigate();
   const { currentUser } = useAuthContext();
 
-  // createEffect(() => {
-  //   if (currentUser().uid !== undefined) {
-  //     const hello = getBooks(currentUser().uid, params.id);
-  //     console.log("hello", hello);
-  //     //Get the bookshelves that the user has
-  //     return getBooks(currentUser().uid, params.id).then(function (data) {
-  //       console.log("Data", data);
-  //       setBooks(data);
-  //     });
-  //   }
-  // });
-
   //Get the bookshelf
   createEffect(() => {
     getBookshelf(params.id).then(function (data) {
@@ -44,9 +32,7 @@ function Bookshelf() {
 
   //Adds a listener for the books in the current bookshelf
   createEffect(() => {
-    console.log("Hello");
     if (currentUser().uid !== undefined) {
-      console.log("Test");
       const q = query(
         collection(db, "books"),
         where("userId", "==", params.user),
@@ -55,7 +41,6 @@ function Bookshelf() {
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const arrayWithBooks = [];
         querySnapshot.forEach((doc) => {
-          console.log("DOC", doc);
           let bookObj = {
             id: doc.id,
             book: doc.data(),
@@ -63,7 +48,6 @@ function Bookshelf() {
           arrayWithBooks.push(bookObj);
         });
         setBooks(arrayWithBooks);
-        console.log("Books", books());
       });
       return unsubscribe;
     }

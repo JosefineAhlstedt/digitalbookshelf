@@ -9,7 +9,6 @@ function Pagination(props) {
   onMount(() => {
     if (props.total !== 0) {
       pageTotal = Math.floor(props.total / 10);
-      console.log("Pagination prop", pageTotal);
     }
   });
 
@@ -41,11 +40,7 @@ function Pagination(props) {
         &lt;
       </button>
       {<button class={styles.paginationNumbers}>{props.page}</button>}
-      <button
-        onClick={() => handlePage("+")}
-        //onClick={() => console.log("Click")}
-        class={styles.paginationButton}
-      >
+      <button onClick={() => handlePage("+")} class={styles.paginationButton}>
         &gt;
       </button>
     </div>

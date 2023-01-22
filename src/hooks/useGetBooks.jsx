@@ -23,14 +23,10 @@ const getBooks = async (id, bookshelfID) => {
       id: doc.id,
       book: doc.data(),
     };
-    //console.log("Id", doc.id);
     arrayWithBooks.push(bookObj);
   });
 
   if (arrayWithBooks !== []) {
-    // const bookObject = {
-    //   books: arrayWithBooks,
-    // };
     return arrayWithBooks;
   }
 };

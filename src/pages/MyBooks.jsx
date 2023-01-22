@@ -44,7 +44,6 @@ function MyBooks() {
     e.preventDefault();
     try {
       addBookshelf(name(), currentUser().uid).then(function (data) {
-        console.log("added data!");
         setShowForm(false);
         getBookshelves(currentUser().uid).then(function (data) {
           setBookshelves(data);
