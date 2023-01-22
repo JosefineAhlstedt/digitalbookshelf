@@ -62,7 +62,11 @@ function Search() {
             </div>
           ))}
       </div>
-      <Pagination total={searchData()} turnpage={setSearchParams} />
+      <Pagination
+        page={searchParams.page}
+        total={searchData()}
+        turnpage={setSearchParams}
+      />
     </>
   );
 }

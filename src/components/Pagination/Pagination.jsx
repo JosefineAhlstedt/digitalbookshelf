@@ -1,10 +1,9 @@
 import styles from "./Pagination.module.scss";
-import { createSignal, createEffect, Show, For, onMount } from "solid-js";
-import { useParams, useSearchParams } from "@solidjs/router";
+import { createSignal, onMount } from "solid-js";
+import { useSearchParams } from "@solidjs/router";
 
 function Pagination(props) {
   let pageTotal;
-  const [pageRange, setPageRange] = createSignal([1, 2, 3, 4, 5]);
   let [searchParams, setSearchParams] = useSearchParams();
 
   onMount(() => {
@@ -41,13 +40,7 @@ function Pagination(props) {
       <button onClick={() => handlePage("-")} class={styles.paginationButton}>
         &lt;
       </button>
-      {
-        <Index each={pageRange()}>
-          {(number, i) => (
-            <button class={styles.paginationNumbers}>{number}</button>
-          )}
-        </Index>
-      }
+      {<button class={styles.paginationNumbers}>{props.page}</button>}
       <button
         onClick={() => handlePage("+")}
         //onClick={() => console.log("Click")}
