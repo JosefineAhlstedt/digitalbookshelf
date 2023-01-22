@@ -35,7 +35,7 @@ function App() {
         <Route path="/author/:author" component={Author} />
         <Route path="/results/:keyword/:page" component={Search} />
         <Route path="/book/:id" component={Book} />
-        <Route path="/bookshelf/:id" component={Bookshelf} />
+        <Route path="/bookshelf/:user/:id" component={Bookshelf} />
         <Route path="/profile/:id" component={Profile} />
       </Routes>
     </div>

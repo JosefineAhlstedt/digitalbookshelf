@@ -44,15 +44,18 @@ function Bookshelf() {
 
   //Adds a listener for the books in the current bookshelf
   createEffect(() => {
+    console.log("Hello");
     if (currentUser().uid !== undefined) {
+      console.log("Test");
       const q = query(
         collection(db, "books"),
-        where("userId", "==", currentUser().uid),
+        where("userId", "==", params.user),
         where("bookshelfId", "==", params.id)
       );
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const arrayWithBooks = [];
         querySnapshot.forEach((doc) => {
+          console.log("DOC", doc);
           let bookObj = {
             id: doc.id,
             book: doc.data(),
@@ -60,6 +63,7 @@ function Bookshelf() {
           arrayWithBooks.push(bookObj);
         });
         setBooks(arrayWithBooks);
+        console.log("Books", books());
       });
       return unsubscribe;
     }
@@ -98,13 +102,15 @@ function Bookshelf() {
                     </For>
                   }
                 </div>
-                <button
-                  class={styles.removeButton}
-                  value={book.id}
-                  onClick={(e) => handleDelete(e)}
-                >
-                  Remove
-                </button>
+                <Show when={params.user === currentUser().uid}>
+                  <button
+                    class={styles.removeButton}
+                    value={book.id}
+                    onClick={(e) => handleDelete(e)}
+                  >
+                    Remove
+                  </button>
+                </Show>
               </div>
             </div>
           );

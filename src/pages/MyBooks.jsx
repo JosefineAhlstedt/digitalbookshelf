@@ -113,7 +113,11 @@ function MyBooks() {
               <img class={styles.bookIcon} src={booksIcon}></img>
               <div
                 class={styles.name}
-                onClick={() => navigate(`/bookshelf/${library.shelf.id}`)}
+                onClick={() =>
+                  navigate(
+                    `/bookshelf/${currentUser().uid}/${library.shelf.id}`
+                  )
+                }
               >{`${library.shelf.name} (${library.books.length})`}</div>
               <button
                 class={styles.removeButton}
